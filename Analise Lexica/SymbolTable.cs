@@ -40,6 +40,16 @@ namespace AnalisadorLexico
             //throw new InvalidOperationException(key + " não encontrada na lista de símbolos.");
         }
 
+        public bool VerifyIfExists(string lexem)
+        {
+            if (Table.ContainsKey(lexem))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         /*
          * Adiciona os dados do dicionário em uma lista
          */

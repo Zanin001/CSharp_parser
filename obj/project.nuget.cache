@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TEPtynNBl8kxAb/zcCTBdluVK8auS0gTfnR05hCHxzFpSZkqrCLLzFGKT/aVZdGskaBSCgB5acWoGMOG2TSrZQ==",
+  "dgSpecHash": "5XfefqwGzzXJmZiwPkdazVwb3suW+mQYfAeb8Dmf9nuEIBbp85SBQwVqdk5+AXOsEjl2eZDdMJoiFOSeMI0afw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Zanin\\Desktop\\AnalisadorLexico-v2\\AnalisadorLexico.csproj",
+  "projectFilePath": "C:\\Users\\bruno\\OneDrive\\Área de Trabalho\\.NET\\TrabalhoA2_Compiladores\\AnalisadorLexico.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
