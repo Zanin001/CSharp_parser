@@ -1,7 +1,7 @@
 
-namespace AnalisadorLexico
+namespace Enums
 {
-    public enum Type 
+    public enum EType 
     {
 		PROGRAMA,
 		VAR,
@@ -12,6 +12,7 @@ namespace AnalisadorLexico
 		TIPO,
 		ESCREVA,
 		INTEIRO,
+		BOOLEANO,
 		PONTO_E_VIRGULA,
 		PONTO,
 		MAIS, 

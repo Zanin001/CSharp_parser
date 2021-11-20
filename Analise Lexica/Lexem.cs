@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Enums;
 
 namespace AnalisadorLexico
 {
@@ -78,27 +79,27 @@ namespace AnalisadorLexico
                     {
                         // Caso for consome próximo caracter e cria um novo token
                         NextChar();
-                        return new Token(Type.ATRIBUICAO, ":=", Line, Colum);
+                        return new Token(EType.ATRIBUICAO, ":=", Line, Colum);
                     }
                     else
-                        return new Token(Type.TIPO, ":", Line, Colum);
+                        return new Token(EType.TIPO, ":", Line, Colum);
                 }
                 else if (Character == ';')
-                    return new Token(Type.PONTO_E_VIRGULA, ";", Line, Colum);
+                    return new Token(EType.PONTO_E_VIRGULA, ";", Line, Colum);
                 else if (Character == '.')
-                    return new Token(Type.PONTO, ".", Line, Colum);
+                    return new Token(EType.PONTO, ".", Line, Colum);
                 else if (Character == '+')
-                    return new Token(Type.MAIS, "+", Line, Colum);
+                    return new Token(EType.MAIS, "+", Line, Colum);
                 else if (Character == '-')
-                    return new Token(Type.MENOS, "-", Line, Colum);
+                    return new Token(EType.MENOS, "-", Line, Colum);
                 else if (Character == '*')
-                    return new Token(Type.MULTIPLICACAO, "*", Line, Colum);
+                    return new Token(EType.MULTIPLICACAO, "*", Line, Colum);
                 else if (Character == '/')
-                    return new Token(Type.DIVISAO, "/", Line, Colum);
+                    return new Token(EType.DIVISAO, "/", Line, Colum);
                 else if (Character == '(')
-                    return new Token(Type.ABRE_PARENTESIS, "(", Line, Colum);
+                    return new Token(EType.ABRE_PARENTESIS, "(", Line, Colum);
                 else if (Character == ')')
-                    return new Token(Type.FECHA_PARENTESIS, ")", Line, Colum);
+                    return new Token(EType.FECHA_PARENTESIS, ")", Line, Colum);
                 //Caso for um comentario ignora
                 else if (Character == '{')
                 {
@@ -127,23 +128,23 @@ namespace AnalisadorLexico
                     }
                     //Verifica se é uma palavra reservada
                     if (lexem == "programa")
-                        return new Token(Type.PROGRAMA, lexem, Line, col);
+                        return new Token(EType.PROGRAMA, lexem, Line, col);
                     else if (lexem == "var")
-                        return new Token(Type.VAR, lexem, Line, col);
+                        return new Token(EType.VAR, lexem, Line, col);
                     else if (lexem == "inicio")
-                        return new Token(Type.INICIO, lexem, Line, col);
+                        return new Token(EType.INICIO, lexem, Line, col);
                     else if (lexem == "fim")
-                        return new Token(Type.FIM, lexem, Line, col);
+                        return new Token(EType.FIM, lexem, Line, col);
                     else if (lexem == "escreva")
-                        return new Token(Type.ESCREVA, lexem, Line, col);
+                        return new Token(EType.ESCREVA, lexem, Line, col);
                     else if (lexem == "inteiro")
-                        return new Token(Type.INTEIRO, lexem, Line, col);
+                        return new Token(EType.INTEIRO, lexem, Line, col);
                     else if (lexem == "booleano")
-                        return new Token(Type.INTEIRO, lexem, Line, col);
+                        return new Token(EType.INTEIRO, lexem, Line, col);
                     else
                     {   
                         // Caso não for adiciona na tabela de simbolos e cria um novo token identificador
-                        Token token = new(Type.IDENTIFICADOR, lexem, Line, col);
+                        Token token = new(EType.IDENTIFICADOR, lexem, Line, col);
                         SymbolTable.AddToken(token);
                         return token;
                     }
@@ -163,12 +164,12 @@ namespace AnalisadorLexico
                         PeekNextChar();
                     }
 
-                    return new Token(Type.NUMERO, lexem, Line, col);
+                    return new Token(EType.NUMERO, lexem, Line, col);
                 }
                 NextChar();
             }
             lexem += Character;
-            return new Token(Type.ERRO, lexem, Line, Colum);
+            return new Token(EType.ERRO, lexem, Line, Colum);
         }
 
         public List<Token> GetLexem() //ANA MATTOS
@@ -176,7 +177,7 @@ namespace AnalisadorLexico
             TokensList = new List<Token>();
             Token newToken = Analyzer();
             // Verifica cada todos os caracteres até for um erro ou terminar
-            while (newToken.type != Type.ERRO && CharPositon != -1)
+            while (newToken.type != EType.ERRO && CharPositon != -1)
             {
                 TokensList.Add(newToken);
                 newToken = Analyzer();

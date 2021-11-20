@@ -1,8 +1,9 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
+using Enums;
+using AnalisadorLexico;
 
-namespace AnalisadorLexico
+
+namespace AnalisadorSintatico
 {
     public class PPR
     {
@@ -23,21 +24,21 @@ namespace AnalisadorLexico
         public bool ProgramAnalyzer()
         {
             getToken();
-            if(token.Type == Type.PROGRAMA)
+            if(token.Type == EType.PROGRAMA)
             {
                 Console.WriteLine(token.Type + " ");
                 getToken();
-                if(token.Type == Type.IDENTIFICADOR)
+                if(token.Type == EType.IDENTIFICADOR)
                 {
                     Console.WriteLine(token.Type + ": " + token.Lexem + " ");
                     st.AddToken(token);
                     getToken();
-                    if(token.Type == Type.PONTO_E_VIRGULA) 
+                    if(token.Type == EType.PONTO_E_VIRGULA) 
                     {
                         Console.WriteLine(token.Type + " ");
                         BlockAnalyzer();
                         getToken();
-                        if(token.Type == Type.PONTO)
+                        if(token.Type == EType.PONTO)
                         {
                             return true;
                         }
@@ -74,16 +75,16 @@ namespace AnalisadorLexico
         public bool VarEtAnalyzer()
         {
             getToken();
-            if(token.Type == Type.VAR)
+            if(token.Type == EType.VAR)
             {
                 getToken();
-                if(token.Type == Type.IDENTIFICADOR)
+                if(token.Type == EType.IDENTIFICADOR)
                 {
-                    while(token.Type == Type.IDENTIFICADOR)
+                    while(token.Type == EType.IDENTIFICADOR)
                     {
                         if(VarAnalyzer())
                         {
-                            if(token.Type == Type.PONTO_E_VIRGULA)
+                            if(token.Type == EType.PONTO_E_VIRGULA)
                             {
                                 getToken();
                                 return true;
@@ -118,18 +119,18 @@ namespace AnalisadorLexico
         {
             do
             {
-                if(token.Type == Type.IDENTIFICADOR)
+                if(token.Type == EType.IDENTIFICADOR)
                 {
                     //if(Symbol.IsDuplicated(token))
                     //{
                     //Symbol.AddTable(token, "variavel");
                     getToken();
-                    if(token.Type == Type.VIRGULA || token.Type == Type.DOISPONTOS)
+                    if(token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
                     {
-                        if(token.Type == Type.VIRGULA)
+                        if(token.Type == EType.VIRGULA)
                         {
                             getToken();
-                            if(token.Type == Type.DOISPONTOS)
+                            if(token.Type == EType.DOISPONTOS)
                             {
                                 Error("Esperado um identificador ou tipo: ", token.NumLine, token.Column);
                                 return false;
@@ -153,14 +154,14 @@ namespace AnalisadorLexico
                     return false;
                 }
             }
-            while(token.Type != Type.DOISPONTOS);
+            while(token.Type != EType.DOISPONTOS);
             getToken();
             return TypeAnalyzer();
         }
 
         public bool TypeAnalyzer()
         {
-            if(token.Type != Type.INTEIRO || token.Type != Type.BOOLEANO)
+            if(token.Type != EType.INTEIRO || token.Type != EType.BOOLEANO)
             {
                 Error("Esperado um tipo: ", token.NumLine, token.Column);
                 return false;
@@ -175,7 +176,7 @@ namespace AnalisadorLexico
 
         public bool CommandAnalyzer()
         {
-            if(token.Type == Type.INICIO)
+            if(token.Type == EType.INICIO)
             {
                 getToken();
                 return SimpleCommandAnalyzer();
@@ -189,9 +190,9 @@ namespace AnalisadorLexico
 
         public bool SimpleCommandAnalyzer()
         {
-            if(token.Type == Type.IDENTIFICADOR)
+            if(token.Type == EType.IDENTIFICADOR)
                 return AssignmentProcedureAnalyzer();
-            else if(token.Type == Type.ESCREVA)
+            else if(token.Type == EType.ESCREVA)
                 return WriteAnalyzer();
             return false;
         }
@@ -199,7 +200,7 @@ namespace AnalisadorLexico
         public bool AssignmentProcedureAnalyzer()
         {
             getToken();
-            if(token.Type == Type.ATRIBUICAO)
+            if(token.Type == EType.ATRIBUICAO)
                 return AssignmentAnalyzer();
             else
             {

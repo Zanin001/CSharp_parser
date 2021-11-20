@@ -1,8 +1,6 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
+using AnalisadorLexico;
 
-namespace AnalisadorLexico
+namespace AnalisadorSintatico
 {
     public abstract class Parser
     {
