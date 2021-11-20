@@ -2,6 +2,7 @@ using AnalisadorLexico;
 
 namespace AnalisadorSintatico
 {
+    //TODO: IMPLEMENTAR CLASSE MÃE
     public abstract class Parser
     {
         SymbolTable st;

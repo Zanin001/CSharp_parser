@@ -208,14 +208,18 @@ namespace AnalisadorSintatico
                 return false; 
             }
         }
+        //TODO: IMPLEMENTAR ANALIZADOR DE CALCULOS
         public bool AssignmentAnalyzer()
         {
             return true;
         }
+        
+        //TODO: IMPLEMENTAR ANALISADOR DE ESCRITA
         public bool WriteAnalyzer()
         {
             return true;
         }
+        //TODO: IMPLEMENTAR ERROS
         public void Error(string mensage, int line, int column)
         {
             Console.WriteLine(mensage + line + ", ", column);
