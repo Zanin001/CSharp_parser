@@ -1,0 +1,28 @@
+
+namespace AnalisadorLexico
+{
+    public enum Type 
+    {
+		PROGRAMA,
+		VAR,
+		DOISPONTOS,
+		INICIO,
+		FIM,
+		ATRIBUICAO,
+		TIPO,
+		ESCREVA,
+		INTEIRO,
+		PONTO_E_VIRGULA,
+		PONTO,
+		MAIS, 
+		MENOS, 
+		MULTIPLICACAO,
+		DIVISAO,
+		NUMERO,
+		IDENTIFICADOR,
+		ABRE_PARENTESIS,
+		FECHA_PARENTESIS,
+		ERRO,
+		VIRGULA
+	}
+}

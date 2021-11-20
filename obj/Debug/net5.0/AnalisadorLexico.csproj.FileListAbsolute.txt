@@ -1,0 +1,48 @@
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.exe
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.deps.json
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.json
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.dev.json
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.csproj.AssemblyReference.cache
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfoInputs.cache
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfo.cs
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.csproj.CoreCompileInputs.cache
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\Zanin\Desktop\Analizador Lexico C#\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.genruntimeconfig.cache
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.exe
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.deps.json
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.json
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.dev.json
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\bin\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfoInputs.cache
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfo.cs
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.csproj.CoreCompileInputs.cache
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.genruntimeconfig.cache
+C:\Users\bruno\OneDrive\Área de Trabalho\AnalisadorLexico\obj\Debug\net5.0\AnalisadorLexico.csproj.AssemblyReference.cache
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.exe
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.deps.json
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.json
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.runtimeconfig.dev.json
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\bin\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.csproj.AssemblyReference.cache
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfoInputs.cache
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.AssemblyInfo.cs
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.csproj.CoreCompileInputs.cache
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\ref\AnalisadorLexico.dll
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.pdb
+C:\Users\Zanin\Desktop\AnalisadorLexico-v2\obj\Debug\net5.0\AnalisadorLexico.genruntimeconfig.cache
