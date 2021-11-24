@@ -4,10 +4,6 @@ namespace AnalisadorLexico
 {
     public class Token // ANA MATTOS
     {  
-        public EType type { get; set;}
-        public string lexem { get; set; }
-        public int numLine { get; set; }
-        public int colum { get; set; }
         public EType Type { get; set; }
         public string Lexem { get; set; }
         public int NumLine { get; set; }
@@ -25,6 +21,16 @@ namespace AnalisadorLexico
         public override string ToString()
         {
             return "Tipo: " + Type + ", Lexema: " + Lexem + ", Linha: " + NumLine + ", Coluna: " + Column;
+        }
+
+        public string GetName()
+        {
+            return Lexem;
+        }
+
+        public int GetLine()
+        {
+            return NumLine;
         }
     }
 }
