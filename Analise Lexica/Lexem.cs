@@ -140,7 +140,7 @@ namespace AnalisadorLexico
                     else if (lexem == "inteiro")
                         return new Token(EType.INTEIRO, lexem, Line, col);
                     else if (lexem == "booleano")
-                        return new Token(EType.INTEIRO, lexem, Line, col);
+                        return new Token(EType.BOOLEANO, lexem, Line, col);
                     else
                     {   
                         // Caso não for adiciona na tabela de simbolos e cria um novo token identificador
@@ -177,7 +177,7 @@ namespace AnalisadorLexico
             TokensList = new List<Token>();
             Token newToken = Analyzer();
             // Verifica cada todos os caracteres até for um erro ou terminar
-            while (newToken.type != EType.ERRO && CharPositon != -1)
+            while (newToken.Type != EType.ERRO && CharPositon != -1)
             {
                 TokensList.Add(newToken);
                 newToken = Analyzer();

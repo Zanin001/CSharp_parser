@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
 using Enums;
 using AnalisadorLexico;
 
@@ -9,7 +11,7 @@ namespace AnalisadorSintatico
     {
         SymbolTable st;
         Lexem lexem;
-        Token token;
+        Token token, token2;
         public PPR (string path)  
         {
             st = new();
@@ -179,7 +181,25 @@ namespace AnalisadorSintatico
             if(token.Type == EType.INICIO)
             {
                 getToken();
-                return SimpleCommandAnalyzer();
+                SimpleCommandAnalyzer();
+                while(token.Type != EType.FIM)
+                {
+                    if(token.Type == EType.PONTO_E_VIRGULA)
+                    {
+                        getToken();
+                        if(token.Type != EType.FIM)
+                        {
+                            SimpleCommandAnalyzer();
+                        }
+                    }
+                    else
+                    {
+                        Error("Esperado ponto e virgula: ", token.NumLine, token.Column);
+                        return false;
+                    }
+                    getToken();
+                }
+                return true;
             }
             else
             {
@@ -199,6 +219,7 @@ namespace AnalisadorSintatico
 
         public bool AssignmentProcedureAnalyzer()
         {
+            token2 = token;
             getToken();
             if(token.Type == EType.ATRIBUICAO)
                 return AssignmentAnalyzer();
@@ -211,9 +232,49 @@ namespace AnalisadorSintatico
         //TODO: IMPLEMENTAR ANALIZADOR DE CALCULOS
         public bool AssignmentAnalyzer()
         {
-            return true;
+            List<Token> assignment = new();
+            getToken();
+            assignment.Add(token);
+            switch(token.Type)
+            {
+                case EType.NUMERO:
+                    getToken();
+                    while(token.Type != EType.PONTO_E_VIRGULA)
+                    {
+                        if(token.Type == EType.MAIS || token.Type == EType.DIVISAO || token.Type == EType.MENOS ||
+                            token.Type == EType.MULTIPLICACAO)
+                        {
+                            assignment.Add(token);
+                            getToken();
+                            if(token.Type == EType.NUMERO)
+                            {
+                                assignment.Add(token);
+                                getToken();
+                            }
+                            else
+                            {
+                                //Error();
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            //Error();
+                            return false;
+                        }
+                    }
+                    //Symbol.AddValor(token2, token);
+                    return true;
+
+                case EType.BOOLEANO:
+                    return true;
+
+                default:
+                    //Error();
+                    return false;
+            }
         }
-        
+
         //TODO: IMPLEMENTAR ANALISADOR DE ESCRITA
         public bool WriteAnalyzer()
         {
