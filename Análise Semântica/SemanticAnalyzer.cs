@@ -124,7 +124,7 @@ namespace AnalisadorLexico.Análise_Semântica
         4) Verificação dos comandos escreva e leia.
 
 
-        5) Verificação de chamadas de procedimento e função.
+        5) Verificação de chamadas de procedimento.
 
 
 
