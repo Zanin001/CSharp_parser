@@ -1,7 +1,8 @@
 using System;
 using Enums;
 using AnalisadorLexico;
-
+using System.Collections.Generic;
+using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
 {
@@ -10,10 +11,13 @@ namespace AnalisadorSintatico
         SymbolTable st;
         Lexem lexem;
         Token token;
+        SemanticAnalyzer semanticAnalizer;
+
         public PPR (string path)  
         {
             st = new();
             lexem = new(path);
+            semanticAnalizer = new();
             ProgramAnalyzer();
         }
 
@@ -32,6 +36,7 @@ namespace AnalisadorSintatico
                 {
                     Console.WriteLine(token.Type + ": " + token.Lexem + " ");
                     st.AddToken(token);
+                    Symbols.Add(new Symbol("var", "nem ideia"));
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA) 
                     {
@@ -215,10 +220,61 @@ namespace AnalisadorSintatico
         }
         
         //TODO: IMPLEMENTAR ANALISADOR DE ESCRITA
-        public bool WriteAnalyzer()
+        public void WriteAnalyzer()
         {
-            return true;
+            getToken();
+            if (token.Type == EType.ABRE_PARENTESIS)
+            {
+                getToken();
+                if (token.Type == EType.IDENTIFICADOR)
+                {
+                    /* if (ts.ts.get(t.conteudo) != null)
+                    {
+                        getToken();
+                        if (t.tipo == Tipo.SFECHA_PARENTESIS)
+                        {
+                            getToken();
+                            //Executa comando de escrita com t.valor
+                        }
+                        else
+                            //erro(") esperado");
+                    }
+                    else
+                        //erro("Identificador não encontrado"); */
+                }
+            }
+            /*else
+                erro("( esperado"); */
         }
+
+        public void ReadAnalyzer()
+        {
+            getToken();
+            if (token.Type == EType.ABRE_PARENTESIS)
+            {
+                getToken();
+                if (token.Type == EType.IDENTIFICADOR)
+                {
+                    /* if (ts.ts.get(t.conteudo) != null)
+                    {
+                        getToken();
+                        if (token.Type == EType.FECHA_PARENTESIS)
+                        {
+                            getToken();
+                            //Executa comando de leitura e coloca valor em t.valor
+                        }
+                        else
+                            erro(") esperado");
+                    }
+                    else
+                        erro("Identificador não encontrado"); */
+                }
+            }
+                /*else
+                erro("( esperado"); */
+        }
+
+
         //TODO: IMPLEMENTAR ERROS
         public void Error(string mensage, int line, int column)
         {

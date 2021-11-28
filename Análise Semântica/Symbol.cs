@@ -6,6 +6,7 @@ namespace AnalisadorLexico
     class Symbol
     {
         public string DataType { get; set; }
+        public string Name { get; set; }
         public string Scope { get; set; }
         public string Valor { get; set; }
         public string Address { get; set; }
@@ -18,6 +19,12 @@ namespace AnalisadorLexico
             Valor = valor;
             Address = address;
             Code = code;
-        }         
+        }
+
+        public Symbol(string dataType, string name)
+        {
+            DataType = dataType;
+            Name = name;
+        }
     }
 }

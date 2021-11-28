@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,28 +9,37 @@ namespace AnalisadorLexico.Análise_Semântica
 {
     public class SemanticAnalyzer
     {
-        public SymbolTable SymbolTable { get; set; }
 
-        public SemanticAnalyzer(SymbolTable symbolTable)
+        public const string DEFINED_VARIABLE = "Variable already defined: ";
+        public const string DEFINED_SUBPROGRAM = "Subprogram already defined: ";
+        public const string UNDEFINED_IDENTIFIER = "Identifier not defined: ";
+        public const string UNDEFINED_SUBPROGRAM = "Subprogram not defined: ";
+        public const string INVALID_OPERATION = "Invalid operation: ";
+
+        private readonly IList<Symbol> Symbols;
+        private SemanticResult Result { get; set; }
+
+        public SemanticAnalyzer()
         {
-            SymbolTable = symbolTable;
+            Symbols = new List<Symbol>();
+            Result = new();
         }
 
         // TODO: Implementar erro
-        /* Verificação de uso de identificadores não declarados.Sempre que for detectado um
-        identificador, verificar se ele foi declarado(está visível na tabela de símbolos) e é
-        compatível com o uso(exemplo: variável usada que existe como nome de programa ou
+        /* Verificar compatível com o uso(exemplo: variável usada que existe como nome de programa ou
         de procedimento na tabela de símbolos deve dar erro). */
-        public bool CheckIfDeclaratedIdentifier(string name)
+        public bool CheckIfDeclaratedIdentifier(Token token)
         {
-            if (SymbolTable.VerifyIfExists(name))
+            if (!Symbols.VerifyIfExists(token.Lexem))
             {
-                return true;
+                Result.Add(token, UNDEFINED_IDENTIFIER);
+                return false;
             }
 
-            return false;
-
+            return true;
         }
+
+
 
 
         /*  Verificação da ocorrência da duplicidade na declaração de um identificador (nome
@@ -44,11 +54,11 @@ namespace AnalisadorLexico.Análise_Semântica
         b) Se for o nome de um procedimento ou função verificar se já não existe um outro
         identificador visível de qualquer tipo em nível igual ao inferior ao agora analisado. */
 
-        public bool CheckIfDuplicatedIdentifier(string name)
+        public bool CheckIfDuplicatedIdentifier(Token token)
         {
-            if (SymbolTable.VerifyIfExists(name))
+            if (Symbols.VerifyIfExists(token.Lexem))
             {
-                return true;
+
             }
 
             return false;
@@ -57,11 +67,60 @@ namespace AnalisadorLexico.Análise_Semântica
 
         /*  3) Verificação de compatibilidade de tipos. Sempre que ocorrer um comando de
         atribuição, verificar se a expressão tem o mesmo tipo da variável ou função que a
-        recebe.
+        recebe. */
+
+        public void CheckType(Token token)
+        {
+            if (token.Type == EType.IDENTIFICADOR)
+            {
+                Symbol identifier = Symbols.ToList().Find(x => x.Name == token.Lexem);
+                if (identifier == null) // verificar se existe na lista
+                {
+                    Result.Add(token, UNDEFINED_IDENTIFIER);
+                }
+                else
+                {
+                    String type = findMostRecentIdentifierType(token.getName());
+                    if (type == null)
+                    {
+                        result.add(token, UNDEFINED_VARIABLE);
+                    }
+                    else
+                    {
+                        typeController.push(type);
+                    }
+                }
+            }
+
+        }
 
 
+        private String findMostRecentIdentifierType(String name)
+        {
+            //for (int i = identifiers.size() - 1; i >= 0; i--)
+            //{
+            //    if (identifiers.get(i).getName().equals(name))
+            //    {
+            //        return identifiers.get(i).getType();
+            //    }
+            //}
+            return null;
+        }
 
 
+        public void pushSymbol(Token token) {
+            if (CheckIfDuplicatedIdentifier(token))
+            {
+                Result.Add(token, DEFINED_VARIABLE);
+            }
+            else
+            {
+                Symbols.Add(new Symbol(null, token.Lexem));
+            }
+        }
+
+
+        /*
         4) Verificação dos comandos escreva e leia.
 
 
