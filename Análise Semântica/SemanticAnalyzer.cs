@@ -25,12 +25,24 @@ namespace AnalisadorLexico.Análise_Semântica
             Result = new();
         }
 
+        public bool VerifyIfExistsinSymbols(string name)
+        {
+            Symbol symbol = Symbols.ToList().Find(x => x.Name == name);
+
+            if (symbol != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         // TODO: Implementar erro
         /* Verificar compatível com o uso(exemplo: variável usada que existe como nome de programa ou
         de procedimento na tabela de símbolos deve dar erro). */
         public bool CheckIfDeclaratedIdentifier(Token token)
         {
-            if (!Symbols.VerifyIfExists(token.Lexem))
+            if (!VerifyIfExistsinSymbols(token.Lexem))
             {
                 Result.Add(token, UNDEFINED_IDENTIFIER);
                 return false;
@@ -56,9 +68,9 @@ namespace AnalisadorLexico.Análise_Semântica
 
         public bool CheckIfDuplicatedIdentifier(Token token)
         {
-            if (Symbols.VerifyIfExists(token.Lexem))
+            if (VerifyIfExistsinSymbols(token.Lexem))
             {
-
+                return true;
             }
 
             return false;
@@ -73,21 +85,16 @@ namespace AnalisadorLexico.Análise_Semântica
         {
             if (token.Type == EType.IDENTIFICADOR)
             {
-                Symbol identifier = Symbols.ToList().Find(x => x.Name == token.Lexem);
-                if (identifier == null) // verificar se existe na lista
+                if (!VerifyIfExistsinSymbols(token.Lexem))
                 {
                     Result.Add(token, UNDEFINED_IDENTIFIER);
                 }
                 else
                 {
-                    String type = findMostRecentIdentifierType(token.getName());
+                    String type = findMostRecentIdentifierType(token.Lexem);
                     if (type == null)
                     {
-                        result.add(token, UNDEFINED_VARIABLE);
-                    }
-                    else
-                    {
-                        typeController.push(type);
+                        Result.Add(token, UNDEFINED_IDENTIFIER);
                     }
                 }
             }
@@ -95,21 +102,21 @@ namespace AnalisadorLexico.Análise_Semântica
         }
 
 
-        private String findMostRecentIdentifierType(String name)
+        private String findMostRecentIdentifierType(string name)
         {
-            //for (int i = identifiers.size() - 1; i >= 0; i--)
-            //{
-            //    if (identifiers.get(i).getName().equals(name))
-            //    {
-            //        return identifiers.get(i).getType();
-            //    }
-            //}
+            Symbol symbol = Symbols.ToList().Find(x => x.Name == name);
+
+            if(symbol != null)
+            {
+                return symbol.DataType;
+            }
+
             return null;
         }
 
 
-        public void pushSymbol(Token token) {
-            if (CheckIfDuplicatedIdentifier(token))
+        public void PushSymbol(Token token) {
+            if (CheckIfDeclaratedIdentifier(token))
             {
                 Result.Add(token, DEFINED_VARIABLE);
             }
@@ -128,15 +135,6 @@ namespace AnalisadorLexico.Análise_Semântica
 
 
 
-        6) Verificação dos operadores unários – , + , nao.
-
-
-
-        É fácil perceber que as chamadas para o analisador semântico não passam de linhas de
-        comandos a serem inseridos no “corpo” do analisador sintático, nos locais apropriados.
-        Vale lembrar que a Linguagem LPD não permite a passagem de parâmetros nos
-        procedimentos e funções. Caso isso fosse permitido, então deveriamos também verificar a
-        consistência no número de argumentos e parâmetros, bem como sua compatibilidade de
-        tipos. */
+        6) Verificação dos operadores unários – , + , nao. */
     }
 }

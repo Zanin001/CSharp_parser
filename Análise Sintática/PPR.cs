@@ -38,7 +38,7 @@ namespace AnalisadorSintatico
                 {
                     Console.WriteLine(token.Type + ": " + token.Lexem + " ");
                     st.AddToken(token);
-                    Symbols.Add(new Symbol("var", "nem ideia"));
+
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA) 
                     {
@@ -128,9 +128,6 @@ namespace AnalisadorSintatico
             {
                 if(token.Type == EType.IDENTIFICADOR)
                 {
-                    //if(Symbol.IsDuplicated(token))
-                    //{
-                    //Symbol.AddTable(token, "variavel");
                     getToken();
                     if(token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
                     {
@@ -175,7 +172,7 @@ namespace AnalisadorSintatico
             }
             else
             {
-                //Symbol.AddType();
+                semanticAnalizer.PushSymbol(token);
                 getToken();
                 return true;
             }
