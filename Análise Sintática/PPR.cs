@@ -38,7 +38,6 @@ namespace AnalisadorSintatico
                 {
                     Console.WriteLine(token.Type + ": " + token.Lexem + " ");
                     st.AddToken(token);
-
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA) 
                     {
@@ -128,6 +127,8 @@ namespace AnalisadorSintatico
             {
                 if(token.Type == EType.IDENTIFICADOR)
                 {
+                    semanticAnalizer.PushSymbol(token);
+
                     getToken();
                     if(token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
                     {
@@ -172,7 +173,6 @@ namespace AnalisadorSintatico
             }
             else
             {
-                semanticAnalizer.PushSymbol(token);
                 getToken();
                 return true;
             }
