@@ -3,7 +3,7 @@ using System;
 namespace AnalisadorLexico
 {
     //TODO: IMPLEMENTAR ANALISE SEMANTICA
-    class Symbol
+    public class Symbol
     {
         public string DataType { get; set; }
         public string Name { get; set; }
