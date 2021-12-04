@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using Enums;
 using AnalisadorLexico;
-using System.Collections.Generic;
 using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
@@ -13,13 +12,14 @@ namespace AnalisadorSintatico
         SymbolTable st;
         Lexem lexem;
         Token token, token2;
-        SemanticAnalyzer semanticAnalizer;
+        SemanticAnalyzer sa;
+        List<Token> tokensList = new List<Token>();
 
         public PPR (string path)
         {
             st = new();
             lexem = new(path);
-            semanticAnalizer = new();
+            sa = new();
             ProgramAnalyzer();
         }
 
@@ -37,8 +37,8 @@ namespace AnalisadorSintatico
                 getToken();
                 if(token.Type == EType.IDENTIFICADOR)
                 {
-                    Console.WriteLine(token.Type + ": " + token.Lexem + " ");
-                    st.AddToken(token);
+                    //Console.WriteLine(token.Type + ": " + token.Lexem + " ");
+                    sa.PushSymbol(token);
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA)
                     {
@@ -94,7 +94,6 @@ namespace AnalisadorSintatico
                             if (token.Type == EType.PONTO_E_VIRGULA)
                             {
                                 getToken();
-                                return true;
                             }
                             else
                             {
@@ -107,7 +106,7 @@ namespace AnalisadorSintatico
                             return false;
                         }
                     }
-                    return false;
+                    return true;
                 }
                 else
                 {
@@ -128,31 +127,33 @@ namespace AnalisadorSintatico
             {
                 if (token.Type == EType.IDENTIFICADOR)
                 {
-                    semanticAnalizer.PushSymbol(token);
-
-                    getToken();
-                    if (token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
+                    if(!sa.CheckIfDuplicatedIdentifier(token))
                     {
-                        if (token.Type == EType.VIRGULA)
+                        sa.PushSymbol(token);
+                        tokensList.Add(token);
+                        getToken();
+                        if (token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
                         {
-                            getToken();
-                            if (token.Type == EType.DOISPONTOS)
+                            if (token.Type == EType.VIRGULA)
                             {
-                                Error("Esperado um identificador ou tipo: ", token.NumLine, token.Column);
-                                return false;
+                                getToken();
+                                if (token.Type == EType.DOISPONTOS)
+                                {
+                                    Error("Esperado um identificador ou tipo: ", token.NumLine, token.Column);
+                                    return false;
+                                }
                             }
+                        }
+                        else
+                        {
+                            Error("Esperado virgula ou dois pontos: ", token.NumLine, token.Column);
+                            return false;
                         }
                     }
                     else
                     {
-                        Error("Esperado virgula ou dois pontos: ", token.NumLine, token.Column);
-                        return false;
+                        Error("Identificador duplicado: ",  token.NumLine, token.Column);
                     }
-                    //}
-                    //else
-                    //{
-                    //Error("Token Duplicado")
-                    //}
                 }
                 else
                 {
@@ -174,6 +175,12 @@ namespace AnalisadorSintatico
             }
             else
             {
+                //TODO: Analise Sintatica deve somente pedir para adicionar o tipo, quem deve fazer as verificações se
+                // o identifier ja esta declarado ou se os tipos são iguais é a Analise Semantica
+                foreach(Token tk in tokensList)
+                {
+                    sa.SetType(tk, token);
+                }
                 getToken();
                 return true;
             }
@@ -288,9 +295,7 @@ namespace AnalisadorSintatico
                 getToken();
                 if (token.Type == EType.IDENTIFICADOR)
                 {
-                    //public Token(EType type, string lexem, int numLine, int column)
-                    Token tk = new Token(token.Type, token.Lexem, token.NumLine, token.Column);
-                    if(true){
+                    if(sa.CheckIfDeclaratedIdentifier(token)){
                         getToken();
                         if(token.Type == EType.FECHA_PARENTESIS)
                         {
@@ -299,58 +304,28 @@ namespace AnalisadorSintatico
                         }
                         else
                         {
-                            return erro("Fecha parentesis esperado");
+                            //Error
+                            return false;
                         }
                     }
                     else
                     {
-                        return erro("Identificador não encontrado");
+                        //Error
+                        return false;
                     }
                 }
                 else
                 {
-                    return erro("Identificador esperado");
+                    //Error
+                    return false;
                 }
             }
             else
             {
-                return erro("Abre parentesis esperado");
+                //Error
+                return false;
             }
         }
-
-        private bool erro(string v)
-        {
-            System.Console.WriteLine(v + ": linha: " + token.NumLine + ", coluna :" + token.Column);
-            return false;
-        }
-
-        public void ReadAnalyzer()
-        {
-            getToken();
-            if (token.Type == EType.ABRE_PARENTESIS)
-            {
-                getToken();
-                if (token.Type == EType.IDENTIFICADOR)
-                {
-                    /* if (ts.ts.get(t.conteudo) != null)
-                    {
-                        getToken();
-                        if (token.Type == EType.FECHA_PARENTESIS)
-                        {
-                            getToken();
-                            //Executa comando de leitura e coloca valor em t.valor
-                        }
-                        else
-                            erro(") esperado");
-                    }
-                    else
-                        erro("Identificador não encontrado"); */
-                }
-            }
-            /*else
-            erro("( esperado"); */
-        }
-
 
         //TODO: IMPLEMENTAR ERROS
         public void Error(string mensage, int line, int column)

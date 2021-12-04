@@ -98,24 +98,37 @@ namespace AnalisadorLexico.Análise_Semântica
             }
         }
 
-        public void SetType(string name, string type)
+        public void SetType(Token name, Token type)
         {
-            Symbol symbol = GetSymbol(name);
+            Symbol symbol = GetSymbol(name.Lexem);
             if (symbol != null)
             {
-                symbol.DataType = type;
+                if(CheckAssignment(name, type))
+                {
+                    symbol.DataType = type.Type.ToString();   
+                }
+                else
+                {
+                    //Error
+                }
             }
         }
 
-        public void CheckAssignment(Token t1, Token t2)
+        public bool CheckAssignment(Token t1, Token t2)
         {
-            bool isValidNumeric = (t1.Type == EType.INTEIRO && t2.Type == EType.NUMERO);
-            bool isValidLogic = t1.Type == EType.BOOLEANO && (t2.Type == EType.IDENTIFICADOR &&
-                (t2.Lexem == "true" || t2.Lexem == "false" || t2.Lexem == "1" || t2.Lexem == "0"));
-
-            if(!isValidNumeric || !isValidLogic)
+            if(t1.Type == EType.INTEIRO && t2.Type == EType.NUMERO)
+            {
+                return true;
+            }
+            else if(t1.Type == EType.BOOLEANO && (t2.Type == EType.IDENTIFICADOR &&
+                (t2.Lexem == "true" || t2.Lexem == "false" || t2.Lexem == "1" || t2.Lexem == "0")))
+            {
+                return true;
+            }
+            else
             {
                 Result.Add(t2, INVALID_OPERATION);
+                return false;
             }
         }
 
