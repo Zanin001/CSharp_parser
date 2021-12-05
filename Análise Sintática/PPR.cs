@@ -112,7 +112,7 @@ namespace AnalisadorSintatico
             }
             else
             {
-                Error("Var esperado: ", token.NumLine, token.Column);
+                Error("Var esperado", token.NumLine, token.Column);
                 return false;
             }
         }
@@ -203,12 +203,13 @@ namespace AnalisadorSintatico
                         }
                         else
                         {
+                            Error("FIM esperado", token.NumLine, token2.Column);
                             return true;
                         }
                     }
                     else
                     {
-                        Error("Esperado ponto e virgula: ", token.NumLine, token2.Column);
+                        Error("Esperado ponto e virgula", token.NumLine, token2.Column);
                         return false;
                     }
                     getToken();
@@ -239,7 +240,7 @@ namespace AnalisadorSintatico
                 return AssignmentAnalyzer();
             else
             {
-                Error("Esperado uma atribuição: ", token.NumLine, token.Column);
+                Error("Esperado uma atribuição", token.NumLine, token.Column);
                 return false;
             }
         }
@@ -247,9 +248,7 @@ namespace AnalisadorSintatico
         //TODO: IMPLEMENTAR ANALIZADOR DE CALCULOS
         public bool AssignmentAnalyzer()
         {
-            List<Token> assignment = new();
             getToken();
-            assignment.Add(token);
             switch (token.Type)
             {
                 case EType.NUMERO:
@@ -259,22 +258,20 @@ namespace AnalisadorSintatico
                         if (token.Type == EType.MAIS || token.Type == EType.DIVISAO || token.Type == EType.MENOS ||
                             token.Type == EType.MULTIPLICACAO)
                         {
-                            assignment.Add(token);
                             getToken();
                             if (token.Type == EType.NUMERO)
                             {
-                                assignment.Add(token);
                                 getToken();
                             }
                             else
                             {
-                                //Error();
+                                Error("Esperado um numero", token.NumLine, token2.Column);
                                 return false;
                             }
                         }
                         else
                         {
-                            //Error();
+                            Error("Esperado um operador", token.NumLine, token2.Column);
                             return false;
                         }
                     }
@@ -285,12 +282,11 @@ namespace AnalisadorSintatico
                     return true;
 
                 default:
-                    //Error();
+                    Error("Esperado um numero ou booleano", token.NumLine, token2.Column);
                     return false;
             }
         }
 
-        //TODO: IMPLEMENTAR ANALISADOR DE ESCRITA
         public bool WriteAnalyzer()
         {
             getToken();
@@ -311,25 +307,25 @@ namespace AnalisadorSintatico
                         }
                         else
                         {
-                            //Error
+                            Error("Esperado um fecha parentesis", token.NumLine, token2.Column);
                             return false;
                         }
                     }
                     else
                     {
-                        //Error
+                        Error("Idenitificador não existe", token.NumLine, token2.Column);
                         return false;
                     }
                 }
                 else
                 {
-                    //Error
+                    Error("Esperado um identificador", token.NumLine, token2.Column);
                     return false;
                 }
             }
             else
             {
-                //Error
+                Error("Esperado um abre parentesis", token.NumLine, token2.Column);
                 return false;
             }
         }
