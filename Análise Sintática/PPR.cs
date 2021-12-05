@@ -1,40 +1,21 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using Enums;
 using AnalisadorLexico;
-using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
 {
     public class PPR:Parser
     {
-        SymbolTable st;
-        Lexem lexem;
-        Token token, token2;
-        SemanticAnalyzer sa;
         List<Token> tokensList = new List<Token>();
-
+        Token token2;
         public PPR (string path):base(path)
         {
-            st = new();
-            lexem = new Lexem(path);
-            sa = new();
-            ProgramAnalyzer();
-
-            saveCode();
         }
 
-        public void getToken()
-        {
-            token = lexem.Analyzer();
-        }
-
-        //AQUI
         public void parse()
         {
             ProgramAnalyzer();
-
             saveCode();
         }
 
@@ -43,47 +24,48 @@ namespace AnalisadorSintatico
             getToken();
             if(token.Type == EType.PROGRAMA)
             {
-                System.Console.WriteLine(token.Type +": " + token.Lexem);
                 getToken();
                 if(token.Type == EType.IDENTIFICADOR)
                 {
-                    //AQUI
-                    System.Console.WriteLine(token.Type +": " + token.Lexem);
-
                     sa.PushSymbol(token);
+                    identifier = token.Lexem;
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA)
                     {
-                        System.Console.WriteLine(token.Type +": " + token.Lexem);
-                        
-                        BlockAnalyzer();
-                        getToken();
-                        if(token.Type == EType.PONTO)
+                        if(BlockAnalyzer())
                         {
-                            System.Console.WriteLine(token.Type +": " + token.Lexem);
-                            return true;
+                            getToken();
+                            if(token.Type == EType.PONTO)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                Error("Ponto esperado", token.NumLine, token.Column);
+                                return false;
+                            }
                         }
                         else
                         {
-                            Error("Ponto esperado: ", token.NumLine, token.Column);
+                            Error("Erro ai ler bloco", token.NumLine, token.Column );
                             return false;
                         }
                     }
                     else
                     {
-                        Error("Ponto e vírgula esperado: ", token.NumLine, token.Column);
+                        Error("Ponto e vírgula esperado", token.NumLine, token.Column);
                         return false;
                     }
                 }
                 else
                 {
-                    Error("Identificador esperado: ", token.NumLine, token.Column);
+                    Error("Identificador esperado", token.NumLine, token.Column);
                     return false;
                 }
             }
             else
             {
-                Error("Programa Principal não encontrado: ", token.NumLine, token.Column);
+                Error("Programa Principal não encontrado", token.NumLine, token.Column);
                 return false;
             }
         }
@@ -91,14 +73,11 @@ namespace AnalisadorSintatico
         public bool BlockAnalyzer()
         {
             getToken();
-            bool var = VarAnalyzer();
-            bool cmd = CommandAnalyzer();
-            return var && cmd;
+            return VarEtAnalyzer() && CommandAnalyzer();
         }
 
         public bool VarEtAnalyzer()
         {
-            getToken();
             if (token.Type == EType.VAR)
             {
                 getToken();
@@ -127,7 +106,7 @@ namespace AnalisadorSintatico
                 }
                 else
                 {
-                    Error("Identificador esperado: ", token.NumLine, token.Column);
+                    Error("Identificador esperado", token.NumLine, token.Column);
                     return false;
                 }
             }
@@ -146,61 +125,64 @@ namespace AnalisadorSintatico
                 {
                     if(!sa.CheckIfDuplicatedIdentifier(token))
                     {
-                        token.codigo = geraTemp();
                         sa.PushSymbol(token);
+                        sa.SetCode(token, geraTemp());
                         tokensList.Add(token);
                         getToken();
-                        if (token.Type == EType.VIRGULA || token.Type == EType.DOISPONTOS)
+                        if (token.Type == EType.VIRGULA || token.Type == EType.TIPO)
                         {
                             if (token.Type == EType.VIRGULA)
                             {
                                 getToken();
-                                if (token.Type == EType.DOISPONTOS)
+                                if (token.Type != EType.IDENTIFICADOR)
                                 {
-                                    Error("Esperado um identificador ou tipo: ", token.NumLine, token.Column);
+                                    Error("Esperado um identificador ou tipo", token.NumLine, token.Column);
                                     return false;
                                 }
                             }
                         }
                         else
                         {
-                            Error("Esperado virgula ou dois pontos: ", token.NumLine, token.Column);
+                            Error("Esperado virgula ou dois pontos", token.NumLine, token.Column);
                             return false;
                         }
                     }
                     else
                     {
-                        Error("Identificador duplicado: ",  token.NumLine, token.Column);
+                        Error("Identificador duplicado",  token.NumLine, token.Column);
+                        return false;
                     }
                 }
                 else
                 {
-                    Error("Esperado um identificador: ", token.NumLine, token.Column);
+                    Error("Esperado um identificador", token.NumLine, token.Column);
                     return false;
                 }
             }
-            while (token.Type != EType.DOISPONTOS);
+            while (token.Type != EType.TIPO);
             getToken();
             return TypeAnalyzer();
         }
 
         public bool TypeAnalyzer()
         {
-            if (token.Type != EType.INTEIRO || token.Type != EType.BOOLEANO)
+            if (token.Type == EType.INTEIRO || token.Type == EType.BOOLEANO)
             {
-                Error("Esperado um tipo: ", token.NumLine, token.Column);
-                return false;
-            }
-            else
-            {
-                //TODO: Analise Sintatica deve somente pedir para adicionar o tipo, quem deve fazer as verificações se
-                // o identifier ja esta declarado ou se os tipos são iguais é a Analise Semantica
                 foreach(Token tk in tokensList)
                 {
-                    sa.SetType(tk, token);
+                    if(!sa.SetType(tk, token))
+                    {
+                        Error("Erro ao atribuir tipo", token.NumLine, token.Column);
+                        return false; 
+                    }
                 }
                 getToken();
                 return true;
+            }
+            else
+            {
+                Error("Esperado um tipo", token.NumLine, token.Column);
+                return false;
             }
         }
 
@@ -318,7 +300,9 @@ namespace AnalisadorSintatico
                 if (token.Type == EType.IDENTIFICADOR)
                 {
                     if(sa.CheckIfDeclaratedIdentifier(token)){
-                        geraCod("call i32 (i8*, ...) @printf( i8* " + token.codigo + " ) nounwind");
+
+                        Symbol sb = sa.GetSymbol(token);  
+                        geraCod("call i32 (i8*, ...) @printf( i8* " + sb.Code + " ) nounwind");
                         getToken();
                         if(token.Type == EType.FECHA_PARENTESIS)
                         {
@@ -371,7 +355,7 @@ namespace AnalisadorSintatico
 
         public void saveCode()
         {
-            Codigo codigo = new Codigo(temp, cod);
+            Codigo codigo = new Codigo(temp, cod, identifier);
             codigo.geradorLLVMIR();
         }
     }

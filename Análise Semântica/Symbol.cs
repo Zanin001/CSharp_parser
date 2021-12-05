@@ -5,6 +5,7 @@ namespace AnalisadorLexico
     //TODO: IMPLEMENTAR ANALISE SEMANTICA
     public class Symbol
     {
+        public Token Token { get; set; }
         public string DataType { get; set; }
         public string Name { get; set; }
         public string Scope { get; set; }
@@ -12,8 +13,9 @@ namespace AnalisadorLexico
         public string Address { get; set; }
         public string Code { get; set; }
 
-        public Symbol(string dataType, string scope, string valor, string address, string code)
+        public Symbol(Token token, string dataType, string scope, string valor, string address, string code)
         {
+            Token = token;
             DataType = dataType;
             Scope = scope;
             Valor = valor;
@@ -21,8 +23,9 @@ namespace AnalisadorLexico
             Code = code;
         }
 
-        public Symbol(string dataType, string name)
+        public Symbol(Token token, string dataType, string name)
         {
+            Token = token;
             DataType = dataType;
             Name = name;
         }

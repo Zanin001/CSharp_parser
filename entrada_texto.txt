@@ -1,9 +1,6 @@
-programa calcula_expressao;
-var
-x, y, z: inteiro;
-r: inteiro;
-{ Este é um comentário }
+programa teste ;
+var x: inteiro;
 inicio
-x := 3;
-escreva r;
+  x := 3 + 1336;
+  escreva(x);
 fim.

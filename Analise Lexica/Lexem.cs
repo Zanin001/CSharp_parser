@@ -84,6 +84,8 @@ namespace AnalisadorLexico
                     else
                         return new Token(EType.TIPO, ":", Line, Colum);
                 }
+                else if (Character == ',')
+                    return new Token(EType.VIRGULA, ",", Line, Colum);
                 else if (Character == ';')
                     return new Token(EType.PONTO_E_VIRGULA, ";", Line, Colum);
                 else if (Character == '.')

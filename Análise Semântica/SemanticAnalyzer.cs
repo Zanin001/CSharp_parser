@@ -25,9 +25,9 @@ namespace AnalisadorLexico.Análise_Semântica
             Result = new();
         }
 
-        public bool VerifyIfExistsInIdentifiers(string name)
+        public bool VerifyIfExistsInIdentifiers(Token token)
         {
-            Symbol symbol = GetSymbol(name);
+            Symbol symbol = GetSymbol(token);
 
             if (symbol != null)
             {
@@ -39,7 +39,7 @@ namespace AnalisadorLexico.Análise_Semântica
 
         public bool CheckIfDeclaratedIdentifier(Token token)
         {
-            if (!VerifyIfExistsInIdentifiers(token.Lexem))
+            if (!VerifyIfExistsInIdentifiers(token))
             {
                 Result.Add(token, UNDEFINED_IDENTIFIER);
                 return false;
@@ -48,10 +48,9 @@ namespace AnalisadorLexico.Análise_Semântica
             return true;
         }
 
-
         public bool CheckIfDuplicatedIdentifier(Token token)
         {
-            if (VerifyIfExistsInIdentifiers(token.Lexem))
+            if (VerifyIfExistsInIdentifiers(token))
             {
                 return true;
             }
@@ -62,22 +61,22 @@ namespace AnalisadorLexico.Análise_Semântica
 
         public void CheckType(Token token)
         {
-            if (!VerifyIfExistsInIdentifiers(token.Lexem))
+            if (!VerifyIfExistsInIdentifiers(token))
             {
                 Result.Add(token, UNDEFINED_IDENTIFIER);
             }
             else
             {
-                String type = findMostRecentIdentifierType(token.Lexem);
+                String type = findMostRecentIdentifierType(token);
                 if (type == null)
                 {
                     Result.Add(token, UNDEFINED_IDENTIFIER);
                 }
             }
         }
-        private string findMostRecentIdentifierType(string name)
+        private string findMostRecentIdentifierType(Token token)
         {
-            Symbol symbol = GetSymbol(name);
+            Symbol symbol = GetSymbol(token);
 
             if (symbol != null)
             {
@@ -94,24 +93,28 @@ namespace AnalisadorLexico.Análise_Semântica
             }
             else
             {
-                Identifiers.Add(new Symbol(null, token.Lexem));
+                Identifiers.Add(new Symbol(token, null, token.Lexem));
             }
         }
 
-        public void SetType(Token name, Token type)
+        public bool SetType(Token name, Token type)
         {
-            Symbol symbol = GetSymbol(name.Lexem);
+            Symbol symbol = GetSymbol(name);
             if (symbol != null)
             {
-                if(CheckAssignment(name, type))
-                {
-                    symbol.DataType = type.Type.ToString();   
-                }
-                else
-                {
-                    //Error
-                }
+                symbol.DataType = type.Type.ToString(); 
+                return true;  
             }
+            return false;
+        }
+
+        public void SetCode(Token tk, string code)
+        {
+            Symbol symbol = GetSymbol(tk);
+            if (symbol != null)
+            {
+                symbol.Code += code;
+            }   
         }
 
         public bool CheckAssignment(Token t1, Token t2)
@@ -132,9 +135,9 @@ namespace AnalisadorLexico.Análise_Semântica
             }
         }
 
-        public Symbol GetSymbol(string name)
+        public Symbol GetSymbol(Token tk)
         {
-            return Identifiers.ToList().Find(x => x.Name == name);
+            return Identifiers.ToList().Find(x => x.Name == tk.Lexem);
         }
 
     }

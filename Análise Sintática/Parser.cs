@@ -1,20 +1,21 @@
 using AnalisadorLexico;
+using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
 {
     //TODO: IMPLEMENTAR CLASSE MÃE
     public abstract class Parser
     {
-        SymbolTable st;
-        Lexem lexem;
-        Token token;
+        public Lexem lexem;
+        public Token token;
+        public SemanticAnalyzer sa;
         public int temp = 1;
-        public string cod;
+        public string cod, identifier;
 
         public Parser(string path)
         {
-            //st = new SymbolTable();
             lexem = new(path);
+            sa = new();
         }
 
         public void getToken()
