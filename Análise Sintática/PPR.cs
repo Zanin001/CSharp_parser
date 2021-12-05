@@ -7,7 +7,7 @@ using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
 {
-    public class PPR
+    public class PPR:Parser
     {
         SymbolTable st;
         Lexem lexem;
@@ -15,38 +15,52 @@ namespace AnalisadorSintatico
         SemanticAnalyzer sa;
         List<Token> tokensList = new List<Token>();
 
-        public PPR (string path)
+        public PPR (string path):base(path)
         {
             st = new();
-            lexem = new(path);
+            lexem = new Lexem(path);
             sa = new();
             ProgramAnalyzer();
+
+            saveCode();
         }
 
         public void getToken()
         {
             token = lexem.Analyzer();
         }
+
+        //AQUI
+        public void parse()
+        {
+            ProgramAnalyzer();
+
+            saveCode();
+        }
+
         public bool ProgramAnalyzer()
         {
             getToken();
             if(token.Type == EType.PROGRAMA)
             {
-                
-                Console.WriteLine(token.Type + " ");
+                System.Console.WriteLine(token.Type +": " + token.Lexem);
                 getToken();
                 if(token.Type == EType.IDENTIFICADOR)
                 {
-                    //Console.WriteLine(token.Type + ": " + token.Lexem + " ");
+                    //AQUI
+                    System.Console.WriteLine(token.Type +": " + token.Lexem);
+
                     sa.PushSymbol(token);
                     getToken();
                     if(token.Type == EType.PONTO_E_VIRGULA)
                     {
-                        Console.WriteLine(token.Type + " ");
+                        System.Console.WriteLine(token.Type +": " + token.Lexem);
+                        
                         BlockAnalyzer();
                         getToken();
                         if(token.Type == EType.PONTO)
                         {
+                            System.Console.WriteLine(token.Type +": " + token.Lexem);
                             return true;
                         }
                         else
@@ -76,7 +90,10 @@ namespace AnalisadorSintatico
 
         public bool BlockAnalyzer()
         {
-            return VarEtAnalyzer() && CommandAnalyzer();
+            getToken();
+            bool var = VarAnalyzer();
+            bool cmd = CommandAnalyzer();
+            return var && cmd;
         }
 
         public bool VarEtAnalyzer()
@@ -129,6 +146,7 @@ namespace AnalisadorSintatico
                 {
                     if(!sa.CheckIfDuplicatedIdentifier(token))
                     {
+                        token.codigo = geraTemp();
                         sa.PushSymbol(token);
                         tokensList.Add(token);
                         getToken();
@@ -201,10 +219,14 @@ namespace AnalisadorSintatico
                         {
                             SimpleCommandAnalyzer();
                         }
+                        else
+                        {
+                            return true;
+                        }
                     }
                     else
                     {
-                        Error("Esperado ponto e virgula: ", token.NumLine, token.Column);
+                        Error("Esperado ponto e virgula: ", token.NumLine, token2.Column);
                         return false;
                     }
                     getToken();
@@ -296,6 +318,7 @@ namespace AnalisadorSintatico
                 if (token.Type == EType.IDENTIFICADOR)
                 {
                     if(sa.CheckIfDeclaratedIdentifier(token)){
+                        geraCod("call i32 (i8*, ...) @printf( i8* " + token.codigo + " ) nounwind");
                         getToken();
                         if(token.Type == EType.FECHA_PARENTESIS)
                         {
@@ -330,7 +353,26 @@ namespace AnalisadorSintatico
         //TODO: IMPLEMENTAR ERROS
         public void Error(string mensage, int line, int column)
         {
-            Console.WriteLine(mensage + line + ", ", column);
+            Console.WriteLine(mensage +": ("+ line +","+column+")");
+        }
+
+        public string geraTemp()
+        {
+            int i = temp++;
+            string nome = '%' + i.ToString();
+            geraCod(nome + " = alloca i32, align 4");
+            return nome;
+        }
+
+        public void geraCod(string comando)
+        {
+            cod += comando + "\n";
+        }
+
+        public void saveCode()
+        {
+            Codigo codigo = new Codigo(temp, cod);
+            codigo.geradorLLVMIR();
         }
     }
 }

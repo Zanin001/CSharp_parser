@@ -5,7 +5,7 @@ using Enums;
 
 namespace AnalisadorLexico
 {
-    
+
     public class Lexem
     {
         private StreamReader St { get; set; }
@@ -70,7 +70,7 @@ namespace AnalisadorLexico
             Character = NextChar();
 
             while (!FileEnds)
-            {   
+            {
                 if (Character == ':')
                 {
                     //Verifica se o próximo caracter é =
@@ -142,7 +142,7 @@ namespace AnalisadorLexico
                     else if (lexem == "booleano")
                         return new Token(EType.BOOLEANO, lexem, Line, col);
                     else
-                    {   
+                    {
                         // Caso não for adiciona na tabela de simbolos e cria um novo token identificador
                         Token token = new(EType.IDENTIFICADOR, lexem, Line, col);
                         SymbolTable.AddToken(token);

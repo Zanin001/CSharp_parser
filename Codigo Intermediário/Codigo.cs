@@ -6,15 +6,16 @@ using System.IO;
 
 namespace AnalisadorLexico
 {
-    class Codigo
+    public class Codigo
     {
-        public int temp { get; set; }
-        public string codigo { get; set; }
+        public int temp;
+        public string codigo;
 
-        public Codigo(int temp, string codigo)
+        public Codigo(int temp, string cod)
         {
             this.temp = temp;
-            this.codigo = codigo;
+            this.codigo = cod;
+            
         }
 
         public string geraInicioCod()
@@ -39,9 +40,13 @@ namespace AnalisadorLexico
             return mostra;
         }
 
-        public void geradorLLVMIR()
+        public async void geradorLLVMIR()
         {
-            //File.ReadAllText("", codigo);
+            using StreamWriter f = new StreamWriter("llvm.ll");
+            f.Write(geraInicioCod());
+            f.Write(geraCodigo());
+            f.Write(geraFimCod());
+            f.Close();            
         }
     }
 }

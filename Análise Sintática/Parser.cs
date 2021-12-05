@@ -8,6 +8,8 @@ namespace AnalisadorSintatico
         SymbolTable st;
         Lexem lexem;
         Token token;
+        public int temp = 1;
+        public string cod;
 
         public Parser(string path)
         {

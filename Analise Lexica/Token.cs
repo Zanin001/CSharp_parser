@@ -8,8 +8,7 @@ namespace AnalisadorLexico
         public string Lexem { get; set; }
         public int NumLine { get; set; }
         public int Column { get; set; }
-        // public string codigo { get; set; }  
-
+        public string codigo { get; set; }
 
         public Token(EType type, string lexem, int numLine, int column)
         {
