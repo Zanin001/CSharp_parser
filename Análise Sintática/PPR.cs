@@ -256,18 +256,20 @@ namespace AnalisadorSintatico
             {
                 case EType.IDENTIFICADOR:
                 case EType.NUMERO:
+                    if(token.Type == EType.IDENTIFICADOR)
+                    {
+                        if(!sa.CheckIfDeclaratedIdentifier(token))
+                        {
+                            Error("Identificador não declarado", token.NumLine, token.Column);
+                            return false;
+                        }
+                    }
                     if(sa.CheckAssignment(sb, token))
                     {
                         if(token.Type == EType.IDENTIFICADOR)
                         {
                             sb2 = sa.GetSymbol(token);
-                            if(sb2 == null)
-                            {
-                                Error("Identificador não declarado", token.NumLine, token.Column);
-                                return false;
-                            }
-                            else
-                                geraCod(cod + "store i32 " + sb2.Code + ", i32* " + sb.Code + ", align 4");
+                            geraCod(cod + "store i32 " + sb2.Code + ", i32* " + sb.Code + ", align 4");
                         }
                         else
                         {
