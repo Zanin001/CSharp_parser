@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="entrada_texto.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="entrada_texto.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Codigo Intermediário\" />
   </ItemGroup>
 

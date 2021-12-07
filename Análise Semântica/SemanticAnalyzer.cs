@@ -104,7 +104,7 @@ namespace AnalisadorLexico.Análise_Semântica
             if(tk.Type == EType.IDENTIFICADOR)
             {
                 Symbol sb2 = GetSymbol(tk);
-                if(sb.DataType == EType.INTEIRO && sb2.DataType == EType.INTEIRO)
+                if(sb.DataType == sb2.DataType)
                 {
                     return true;
                 }
