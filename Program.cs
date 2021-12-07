@@ -7,7 +7,7 @@ namespace AnalisadorLexico
 {
     class Program
     {
-        static void Main(string[] args) // ANA MATTOS
+        static void Main2(string[] args) // ANA MATTOS
         {
             bool x = true;
             while (x)

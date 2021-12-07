@@ -3,7 +3,7 @@ using AnalisadorLexico.Análise_Semântica;
 
 namespace AnalisadorSintatico
 {
-    //TODO: IMPLEMENTAR CLASSE MÃE
+
     public abstract class Parser
     {
         public Lexem lexem;

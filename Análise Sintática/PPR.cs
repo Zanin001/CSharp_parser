@@ -357,7 +357,6 @@ namespace AnalisadorSintatico
 
                         Symbol sb = sa.GetSymbol(token);  
                         geraCod("call i32 (i8*, ...) @printf( i8* " + sb.Code + " ) nounwind");
-                        Console.WriteLine(sb.Valor);
                         getToken();
                         if(token.Type == EType.FECHA_PARENTESIS)
                         {
