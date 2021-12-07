@@ -8,9 +8,13 @@ Necessário [SDK .NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) e [Vis
 
 Após instalados, deve-se seguir os seguintes passos:
 
-Compilar o sistema no Visual Studio e então ele irá ler o arquivo chamado `entrada_texto.txt` que está na pasta raiz do sistema.
+Compilar o sistema no Visual Studio e então ele irá solicitar o caminho do arquivo a ser compilado, por exemplo: 
+
+`C:\\TrabalhoA2_Compiladores\\entrada_texto.txt`
 
 O conteúdo desse arquivo pode ser alterado conforme os cases de testes disponíveis na seção abaixo ou alterado conforme demanda.
+
+Após digitar o caminho e se for válido, ele irá fazer os processos de compilação e printar os erros ou o código intermediário na tela. Caso ocorra sucesso, o arquivo `llvm.ll` da pasta raiz do programa será atualizado com o novo código intermediário.
 
 ## Alguns cases para teste
 
