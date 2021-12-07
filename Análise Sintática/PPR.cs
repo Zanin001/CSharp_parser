@@ -180,6 +180,7 @@ namespace AnalisadorSintatico
                         return false; 
                     }
                 }
+                tokensList.Clear();
                 getToken();
                 return true;
             }
@@ -255,7 +256,7 @@ namespace AnalisadorSintatico
             {
                 case EType.IDENTIFICADOR:
                 case EType.NUMERO:
-                    if(sa.CheckAssignment(token2, token))
+                    if(sa.CheckAssignment(sb, token))
                     {
                         if(token.Type == EType.IDENTIFICADOR)
                         {
@@ -308,7 +309,7 @@ namespace AnalisadorSintatico
                         }
                         else if(token.Type == EType.IDENTIFICADOR)
                         {
-                            if(sa.CheckAssignment(token2, token))
+                            if(sa.CheckAssignment(sb, token))
                             {
                                 sb2 = sa.GetSymbol(token);
                                 if(sb2 == null)
@@ -356,6 +357,7 @@ namespace AnalisadorSintatico
 
                         Symbol sb = sa.GetSymbol(token);  
                         geraCod("call i32 (i8*, ...) @printf( i8* " + sb.Code + " ) nounwind");
+                        Console.WriteLine(sb.Valor);
                         getToken();
                         if(token.Type == EType.FECHA_PARENTESIS)
                         {

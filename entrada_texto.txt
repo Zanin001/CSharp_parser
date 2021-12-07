@@ -3,7 +3,6 @@ var
 x, y: inteiro;
 z: booleano;
 inicio
-  z := true;
   y := 2 + 5;
   x := y - 1336;
   escreva(x);

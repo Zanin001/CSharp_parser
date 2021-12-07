@@ -1,9 +1,6 @@
 ﻿using Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnalisadorLexico.Análise_Semântica
 {
@@ -48,7 +45,7 @@ namespace AnalisadorLexico.Análise_Semântica
             return false;
         }
 
-        private string findMostRecentIdentifierType(Token token)
+        private EType findMostRecentIdentifierType(Token token)
         {
             Symbol symbol = GetSymbol(token);
 
@@ -57,7 +54,7 @@ namespace AnalisadorLexico.Análise_Semântica
                 return symbol.DataType;
             }
 
-            return null;
+            return 0;
         }
         public bool PushSymbol(Token token)
         {
@@ -67,7 +64,7 @@ namespace AnalisadorLexico.Análise_Semântica
             }
             else
             {
-                Identifiers.Add(new Symbol(token, null, token.Lexem));
+                Identifiers.Add(new Symbol(token, EType.NAO_IDENTIFICADO, token.Lexem));
                 return true;
             }
         }
@@ -77,7 +74,7 @@ namespace AnalisadorLexico.Análise_Semântica
             Symbol symbol = GetSymbol(name);
             if (symbol != null)
             {
-                symbol.DataType = type.Type.ToString(); 
+                symbol.DataType = type.Type; 
                 return true;  
             }
             return false;
@@ -92,22 +89,21 @@ namespace AnalisadorLexico.Análise_Semântica
             }   
         }
 
-        public bool CheckAssignment(Token t1, Token t2)
+        public bool CheckAssignment(Symbol sb, Token tk)
         {
-            if((t1.Type == EType.INTEIRO && t2.Type == EType.NUMERO) || (t1.Type == EType.INTEIRO && t2.Type == EType.INTEIRO))
+            if(tk.Type == EType.IDENTIFICADOR)
             {
-                return true;
-            }
-            
-            else if(t1.Type == EType.BOOLEANO && (t2.Type == EType.IDENTIFICADOR &&
-                (t2.Lexem == "true" || t2.Lexem == "false" || t2.Lexem == "1" || t2.Lexem == "0")))
-            {
-                return true;
-            }
-            else
-            {
+                Symbol sb2 = GetSymbol(tk);
+                if(sb.DataType == EType.INTEIRO && sb2.DataType == EType.INTEIRO)
+                {
+                    return true;
+                }
                 return false;
             }
+            else if((sb.DataType == EType.INTEIRO && tk.Type == EType.NUMERO))
+                return true;
+            else
+                return false;
         }
 
         public Symbol GetSymbol(Token tk)
