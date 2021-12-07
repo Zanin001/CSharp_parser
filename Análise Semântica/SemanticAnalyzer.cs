@@ -14,6 +14,9 @@ namespace AnalisadorLexico.Análise_Semântica
             Identifiers = new List<Symbol>();
         }
 
+        /* 
+         * verifica se já existe o identificador na lista de simbolos 
+         */
         public bool VerifyIfExistsInIdentifiers(Token token)
         {
             Symbol symbol = GetSymbol(token);
@@ -26,6 +29,9 @@ namespace AnalisadorLexico.Análise_Semântica
             return false;
         }
 
+        /* 
+         * verifica se já foi declarado o identificador na lista de simbolos 
+         */
         public bool CheckIfDeclaratedIdentifier(Token token)
         {
             if (!VerifyIfExistsInIdentifiers(token))
@@ -36,6 +42,9 @@ namespace AnalisadorLexico.Análise_Semântica
             return true;
         }
 
+        /* 
+         * verifica se o identificador é duplicado
+         */
         public bool CheckIfDuplicatedIdentifier(Token token)
         {
             if (VerifyIfExistsInIdentifiers(token))
@@ -45,17 +54,9 @@ namespace AnalisadorLexico.Análise_Semântica
             return false;
         }
 
-        private EType findMostRecentIdentifierType(Token token)
-        {
-            Symbol symbol = GetSymbol(token);
-
-            if (symbol != null)
-            {
-                return symbol.DataType;
-            }
-
-            return 0;
-        }
+        /*
+         * Adiciona um token na lista de identificadores, caso ele não exista
+         */
         public bool PushSymbol(Token token)
         {
             if (CheckIfDeclaratedIdentifier(token))
@@ -69,6 +70,9 @@ namespace AnalisadorLexico.Análise_Semântica
             }
         }
 
+        /*
+        * Seta o tipo do identificador caso ele exista
+        */
         public bool SetType(Token name, Token type)
         {
             Symbol symbol = GetSymbol(name);
@@ -80,6 +84,9 @@ namespace AnalisadorLexico.Análise_Semântica
             return false;
         }
 
+        /*
+         * Seta o código do identificador caso ele exista
+         */
         public void SetCode(Token tk, string code)
         {
             Symbol symbol = GetSymbol(tk);
@@ -89,6 +96,9 @@ namespace AnalisadorLexico.Análise_Semântica
             }   
         }
 
+        /*
+         * Efetua a checagem de tipos durante a atribuição de valores nas variáveis
+         */
         public bool CheckAssignment(Symbol sb, Token tk)
         {
             if(tk.Type == EType.IDENTIFICADOR)
@@ -106,6 +116,9 @@ namespace AnalisadorLexico.Análise_Semântica
                 return false;
         }
 
+        /*
+         * Retorna o identificador pelo nome
+         */
         public Symbol GetSymbol(Token tk)
         {
             return Identifiers.ToList().Find(x => x.Name == tk.Lexem);
