@@ -1,0 +1,6 @@
+# Considerações
+
+## Requisitos não implementados:
+
+1. O sistema não faz a verificação de atribuição de booleanos.
+2. Não estamos salvando o valor da atribuição na lista de símbolos.
