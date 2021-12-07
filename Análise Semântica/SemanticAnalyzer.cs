@@ -10,19 +10,11 @@ namespace AnalisadorLexico.Análise_Semântica
     public class SemanticAnalyzer
     {
 
-        public const string DEFINED_IDENTIFIER = "Identifier already defined: ";
-        public const string DEFINED_SUBPROGRAM = "Subprogram already defined: ";
-        public const string UNDEFINED_IDENTIFIER = "Identifier not defined: ";
-        public const string UNDEFINED_SUBPROGRAM = "Subprogram not defined: ";
-        public const string INVALID_OPERATION = "Invalid operation: ";
-
         private readonly IList<Symbol> Identifiers;
-        private SemanticResult Result { get; set; }
 
         public SemanticAnalyzer()
         {
             Identifiers = new List<Symbol>();
-            Result = new();
         }
 
         public bool VerifyIfExistsInIdentifiers(Token token)
@@ -41,7 +33,6 @@ namespace AnalisadorLexico.Análise_Semântica
         {
             if (!VerifyIfExistsInIdentifiers(token))
             {
-                Result.Add(token, UNDEFINED_IDENTIFIER);
                 return false;
             }
 
@@ -54,26 +45,9 @@ namespace AnalisadorLexico.Análise_Semântica
             {
                 return true;
             }
-
-            Result.Add(token, DEFINED_IDENTIFIER);
             return false;
         }
 
-        public void CheckType(Token token)
-        {
-            if (!VerifyIfExistsInIdentifiers(token))
-            {
-                Result.Add(token, UNDEFINED_IDENTIFIER);
-            }
-            else
-            {
-                String type = findMostRecentIdentifierType(token);
-                if (type == null)
-                {
-                    Result.Add(token, UNDEFINED_IDENTIFIER);
-                }
-            }
-        }
         private string findMostRecentIdentifierType(Token token)
         {
             Symbol symbol = GetSymbol(token);
@@ -85,15 +59,16 @@ namespace AnalisadorLexico.Análise_Semântica
 
             return null;
         }
-        public void PushSymbol(Token token)
+        public bool PushSymbol(Token token)
         {
             if (CheckIfDeclaratedIdentifier(token))
             {
-                Result.Add(token, DEFINED_IDENTIFIER);
+                return false;
             }
             else
             {
                 Identifiers.Add(new Symbol(token, null, token.Lexem));
+                return true;
             }
         }
 
@@ -119,10 +94,11 @@ namespace AnalisadorLexico.Análise_Semântica
 
         public bool CheckAssignment(Token t1, Token t2)
         {
-            if(t1.Type == EType.INTEIRO && t2.Type == EType.NUMERO)
+            if((t1.Type == EType.INTEIRO && t2.Type == EType.NUMERO) || (t1.Type == EType.INTEIRO && t2.Type == EType.INTEIRO))
             {
                 return true;
             }
+            
             else if(t1.Type == EType.BOOLEANO && (t2.Type == EType.IDENTIFICADOR &&
                 (t2.Lexem == "true" || t2.Lexem == "false" || t2.Lexem == "1" || t2.Lexem == "0")))
             {
@@ -130,7 +106,6 @@ namespace AnalisadorLexico.Análise_Semântica
             }
             else
             {
-                Result.Add(t2, INVALID_OPERATION);
                 return false;
             }
         }

@@ -7,7 +7,9 @@ namespace AnalisadorSintatico
 {
     public class PPR:Parser
     {
+        //Lista de tokens utilizada para enviar a Analise Semantica
         List<Token> tokensList = new List<Token>();
+        //Token para salvar token que esta recebendo uma atribuição
         Token token2;
         public PPR (string path):base(path)
         {
@@ -99,6 +101,7 @@ namespace AnalisadorSintatico
                         }
                         else
                         {
+                            // Não necessita retornar erro pois quem retorna é o VarAnalyzer()
                             return false;
                         }
                     }
@@ -119,6 +122,7 @@ namespace AnalisadorSintatico
 
         public bool VarAnalyzer()
         {
+            //Entra em loop para verificar todas as variaveis declaradas na mesma linha
             do
             {
                 if (token.Type == EType.IDENTIFICADOR)
@@ -201,18 +205,12 @@ namespace AnalisadorSintatico
                         {
                             SimpleCommandAnalyzer();
                         }
-                        else
-                        {
-                            Error("FIM esperado", token.NumLine, token2.Column);
-                            return true;
-                        }
                     }
                     else
                     {
                         Error("Esperado ponto e virgula", token.NumLine, token2.Column);
                         return false;
                     }
-                    getToken();
                 }
                 return true;
             }
@@ -249,33 +247,92 @@ namespace AnalisadorSintatico
         public bool AssignmentAnalyzer()
         {
             getToken();
+            Symbol sb = sa.GetSymbol(token2);
+            Symbol sb2;
+            string cod = sb.Code + " = ";
+            string op;
             switch (token.Type)
             {
+                case EType.IDENTIFICADOR:
                 case EType.NUMERO:
+                    if(sa.CheckAssignment(token2, token))
+                    {
+                        if(token.Type == EType.IDENTIFICADOR)
+                        {
+                            sb2 = sa.GetSymbol(token);
+                            if(sb2 == null)
+                            {
+                                Error("Identificador não declarado", token.NumLine, token.Column);
+                                return false;
+                            }
+                            else
+                                geraCod(cod + "store i32 " + sb2.Code + ", i32* " + sb.Code + ", align 4");
+                        }
+                        else
+                        {
+                            geraCod(cod + "store i32 " + sb.Valor + ", i32* " + sb.Code + ", align 4");
+                        }
+                    }
+                    else
+                    {
+                        Error("Declaração com tipos diferentes", token.NumLine, token.Column);
+                        return false;
+                    }
+                    
                     getToken();
                     while (token.Type != EType.PONTO_E_VIRGULA)
                     {
-                        if (token.Type == EType.MAIS || token.Type == EType.DIVISAO || token.Type == EType.MENOS ||
-                            token.Type == EType.MULTIPLICACAO)
+                        switch (token.Type)
                         {
+                            case EType.MAIS:
+                                op = "add i32 ";
+                                break;
+                            case EType.DIVISAO:
+                                op = "div i32 ";
+                                break;
+                            case EType.MENOS:
+                                op = "sub i32 ";
+                                break;
+                            case EType.MULTIPLICACAO:
+                                op = "mult i32 ";
+                                break;
+                            default:
+                                Error("Esperado um operador", token.NumLine, token.Column);
+                                return false;
+                        }
+                        getToken();
+                        if (token.Type == EType.NUMERO)
+                        {
+                            geraCod(cod + op + sb.Code + ", " + token.Lexem);
                             getToken();
-                            if (token.Type == EType.NUMERO)
+                        }
+                        else if(token.Type == EType.IDENTIFICADOR)
+                        {
+                            if(sa.CheckAssignment(token2, token))
                             {
-                                getToken();
+                                sb2 = sa.GetSymbol(token);
+                                if(sb2 == null)
+                                {
+                                    Error("Identificador não declarado", token.NumLine, token.Column);
+                                    return false;
+                                }
+                                else
+                                {
+                                    geraCod(cod + op + sb.Code + ", " + sb2.Code);
+                                }
                             }
                             else
                             {
-                                Error("Esperado um numero", token.NumLine, token2.Column);
+                                Error("Declaração com tipos diferentes", token.NumLine, token.Column);
                                 return false;
                             }
                         }
                         else
                         {
-                            Error("Esperado um operador", token.NumLine, token2.Column);
+                            Error("Esperado um numero ou identificador", token.NumLine, token.Column);
                             return false;
                         }
                     }
-                    //Symbol.AddValor(token2, token);
                     return true;
 
                 case EType.BOOLEANO:
@@ -330,7 +387,6 @@ namespace AnalisadorSintatico
             }
         }
 
-        //TODO: IMPLEMENTAR ERROS
         public void Error(string mensage, int line, int column)
         {
             Console.WriteLine(mensage +": ("+ line +","+column+")");
