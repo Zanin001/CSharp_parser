@@ -10,7 +10,7 @@ namespace AnalisadorLexico
         static void Main2(string[] args) // ANA MATTOS
         {
             bool x = true;
-            while (x)
+            while (x) 
             {
                 string path, option;
                
